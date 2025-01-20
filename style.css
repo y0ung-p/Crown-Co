@@ -62,11 +62,12 @@ header nav ul li a:hover {
 }
 
 .hero-logo {
-  width: 150px; /* Adjust size as needed */
+  width: 150px; /* Adjust this size as needed */
   height: auto;
   margin-bottom: 1.5rem;
-  border-radius: 8px; /* Optional rounded corners */
+  border-radius: 8px; /* Optional */
 }
+
 
 .hero h1 {
   font-size: 3rem;
