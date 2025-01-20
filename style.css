@@ -4,6 +4,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
+  scroll-behavior: smooth;
 }
 body {
   background-color: #f4f4f9;
@@ -21,6 +22,7 @@ header {
   position: sticky;
   top: 0;
   z-index: 1000;
+  animation: slideDown 1s ease;
 }
 header .logo {
   font-size: 1.8rem;
@@ -48,6 +50,7 @@ header nav ul li a:hover {
   color: #fff;
   text-align: center;
   padding: 4rem 1rem;
+  animation: fadeIn 2s ease;
 }
 .hero h1 {
   font-size: 3rem;
@@ -64,21 +67,21 @@ header nav ul li a:hover {
   padding: 0.8rem 1.5rem;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 .hero button:hover {
+  transform: scale(1.1);
   background-color: #e09c34;
 }
 
-/* Section Styles */
-section {
-  padding: 2rem;
-  text-align: center;
-}
+/* Features Section */
 .features {
   display: flex;
   justify-content: space-around;
   margin: 2rem 0;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease forwards;
 }
 .features .feature {
   background-color: #fff;
@@ -86,6 +89,11 @@ section {
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   max-width: 300px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.features .feature:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
 .features .feature h2 {
   font-size: 1.5rem;
@@ -101,6 +109,9 @@ section {
   gap: 2rem;
   justify-content: center;
   flex-wrap: wrap;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease forwards;
 }
 .product {
   background-color: #fff;
@@ -109,20 +120,11 @@ section {
   max-width: 200px;
   padding: 1rem;
   text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.product img {
-  width: 100%;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-}
-.product h2 {
-  font-size: 1.2rem;
-  color: #222;
-}
-.product p {
-  font-size: 1rem;
-  color: #f9c74f;
-  font-weight: bold;
+.product:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Footer */
@@ -133,6 +135,31 @@ footer {
   padding: 1rem;
   margin-top: 2rem;
 }
-footer p {
-  margin: 0.5rem 0;
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
