@@ -45,21 +45,39 @@ header nav ul li a:hover {
 }
 
 /* Hero Section */
+/* Hero Section */
 .hero {
   background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('assets/hero-bg.jpg') no-repeat center/cover;
   color: #fff;
   text-align: center;
   padding: 4rem 1rem;
-  animation: fadeIn 2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
+
+.hero-content {
+  max-width: 800px;
+}
+
+.hero-logo {
+  width: 150px; /* Adjust size as needed */
+  height: auto;
+  margin-bottom: 1.5rem;
+  border-radius: 8px; /* Optional rounded corners */
+}
+
 .hero h1 {
   font-size: 3rem;
   margin-bottom: 1rem;
 }
+
 .hero p {
   font-size: 1.2rem;
   margin-bottom: 2rem;
 }
+
 .hero button {
   background-color: #f9c74f;
   color: #222;
@@ -69,15 +87,10 @@ header nav ul li a:hover {
   cursor: pointer;
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
+
 .hero button:hover {
   transform: scale(1.1);
   background-color: #e09c34;
-}
-.hero {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
 }
 
 .logo {
