@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Header -->
   <header>
     <div class="logo">Noble House</div>
     <nav>
@@ -19,30 +20,46 @@
     </nav>
   </header>
 
+  <!-- Hero Section -->
   <section id="home" class="hero">
     <h1>Welcome to Noble House</h1>
     <p>Where luxury meets excellence.</p>
   </section>
 
+  <!-- About Section -->
   <section id="about">
     <h2>About Us</h2>
     <p>Noble House curates an exquisite selection of premium goods for discerning tastes.</p>
   </section>
 
+  <!-- Shop Section -->
   <section id="shop">
     <h2>Our Collection</h2>
     <div class="products">
-      <!-- Example Product -->
-      <div class="product">
-        <img src="assets/product1.jpg" alt="Product Name">
-        <h3>Product Name</h3>
-        <p>$99.99</p>
-      </div>
+      <!-- Products will be dynamically added here -->
     </div>
   </section>
 
+  <!-- Contact Section -->
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <form>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+      <label for="message">Message:</label>
+      <textarea id="message" name="message" required></textarea>
+      <button type="submit">Send</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
   <footer>
     <p>© 2025 Noble House. All rights reserved.</p>
   </footer>
+
+  <!-- Script -->
+  <script src="script.js"></script>
 </body>
 </html>
