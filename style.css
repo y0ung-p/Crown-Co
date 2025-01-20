@@ -46,7 +46,7 @@ header nav ul li a:hover {
 
 /* Hero Section */
 .hero {
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('CROWN & CO.mp4') no-repeat center/cover;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('CROWN&CO.mp4') no-repeat center/cover;
   color: #fff;
   text-align: center;
   padding: 4rem 1rem;
