@@ -1,31 +1,46 @@
-// Navigation Smooth Scroll
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener("click", function (e) {
-    e.preventDefault();
-    document.querySelector(this.getAttribute("href")).scrollIntoView({
-      behavior: "smooth",
-    });
+// Scroll-triggered Animations
+const scrollElements = document.querySelectorAll(".features, .products");
+
+const elementInView = (el, offset = 150) => {
+  const elementTop = el.getBoundingClientRect().top;
+  return elementTop <= (window.innerHeight || document.documentElement.clientHeight) - offset;
+};
+
+const displayScrollElement = (element) => {
+  element.style.opacity = "1";
+  element.style.transform = "translateY(0)";
+};
+
+const handleScrollAnimation = () => {
+  scrollElements.forEach((el) => {
+    if (elementInView(el, 150)) {
+      displayScrollElement(el);
+    }
+  });
+};
+
+window.addEventListener("scroll", handleScrollAnimation);
+
+// Button Animation
+const buttons = document.querySelectorAll("button");
+buttons.forEach((button) => {
+  button.addEventListener("click", () => {
+    button.style.animation = "bounce 0.5s ease";
+    setTimeout(() => {
+      button.style.animation = "none";
+    }, 500);
   });
 });
 
-// Dynamic Product Highlight
-const products = document.querySelectorAll('.product');
-products.forEach(product => {
-  product.addEventListener('mouseover', () => {
-    product.style.transform = 'scale(1.05)';
-    product.style.boxShadow = '0 8px 12px rgba(0, 0, 0, 0.2)';
-  });
-  product.addEventListener('mouseout', () => {
-    product.style.transform = 'scale(1)';
-    product.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
-  });
-});
-
-// Pop-up Message for Contact Form Submission
-const contactForm = document.querySelector('form');
-if (contactForm) {
-  contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    alert('Thank you for reaching out! We’ll get back to you soon.');
-  });
-}
+// Bounce Animation for Buttons
+const styleSheet = document.styleSheets[0];
+styleSheet.insertRule(`
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+`);
