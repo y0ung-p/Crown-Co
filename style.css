@@ -49,7 +49,7 @@ header nav ul li a:hover {
   background: url('assets/logo.mp4') no-repeat center/cover;
   color: #191919;
   text-align: center;
-  height: 100vh;
+  height: 400vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -65,7 +65,7 @@ header nav ul li a:hover {
   margin-bottom: 2rem;
 }
 .hero button {
-  background-color: #191919;
+  background-color: #f9c74f;
   color: #222;
   border: none;
   padding: 0.8rem 1.5rem;
