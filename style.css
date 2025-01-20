@@ -47,7 +47,7 @@ header nav ul li a:hover {
 /* Hero Section */
 /* Hero Section */
 .hero {
-  background: linear-gradient(rgb(25, 25, 25), rgba( 25, 25, 25)), url('Assets/logo.mp4') no-repeat center/cover;
+  background: linear-gradient(rgb(25, 25, 25), rgb( 25, 25, 25)), url('Assets/logo.mp4') no-repeat center/cover;
   color: #191919;
   text-align: center;
   padding: 4rem 1rem;
@@ -55,6 +55,7 @@ header nav ul li a:hover {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-size: cover;
 }
 
 .hero-content {
