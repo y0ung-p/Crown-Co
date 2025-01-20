@@ -12,8 +12,8 @@ body {
   line-height: 1.6;
 }
 header {
-  background-color: #222;
-  color: #191919;
+  background-color: ##191919;
+  color: #333;
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
