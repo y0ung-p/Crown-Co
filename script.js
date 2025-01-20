@@ -44,3 +44,26 @@ styleSheet.insertRule(`
     }
   }
 `);
+document.addEventListener("DOMContentLoaded", () => {
+  const popup = document.getElementById("signupPopup");
+  const closePopup = document.getElementById("closePopup");
+  const signupForm = document.getElementById("signupForm");
+
+  // Show the popup after a delay
+  setTimeout(() => {
+    popup.classList.add("active");
+  }, 2000);
+
+  // Close the popup
+  closePopup.addEventListener("click", () => {
+    popup.classList.remove("active");
+  });
+
+  // Handle the signup form submission
+  signupForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    alert("Thank you for signing up!");
+    popup.classList.remove("active");
+  });
+});
+

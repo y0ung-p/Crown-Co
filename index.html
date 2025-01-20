@@ -20,20 +20,19 @@
     </nav>
   </header>
 
-  <section class="hero">
-    <section class="hero">
+<section class="hero">
+  <video autoplay muted playsinline class="hero-video">
+    <source src="assets/logo.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
   <div class="hero-content">
-    <video class="hero-logo" autoplay muted loop>
-      <source src="assets/logo.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-    <h1>Welcome to Your Brand</h1>
-    <p>Experience luxury and style like never before.</p>
-    <button>Shop Now</button>
+    <h1>Innovate with LuxVibe</h1>
+    <p>Where modern luxury meets timeless style.</p>
+    <a href="#shop" class="cta-button">Shop Now</a>
   </div>
 </section>
-  </div>
-  </section>
+
+
 
   <section class="features">
     <div class="feature">
@@ -49,5 +48,18 @@
   <footer>
     <p>© 2025 Noble House. All rights reserved.</p>
   </footer>
+  <div class="popup" id="signupPopup">
+  <div class="popup-content">
+    <img src="assets/10% OFF YOUR FIRST ORDER FOR.png" alt="10% Off Discount" />
+    <form id="signupForm">
+      <h2>Sign Up for 10% Off!</h2>
+      <input type="text" placeholder="Enter your name" required />
+      <input type="email" placeholder="Enter your email" required />
+      <button type="submit">Sign Up</button>
+    </form>
+    <button class="close-popup" id="closePopup">×</button>
+  </div>
+</div>
+
 </body>
 </html>
