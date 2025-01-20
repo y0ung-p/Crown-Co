@@ -73,6 +73,17 @@ header nav ul li a:hover {
   transform: scale(1.1);
   background-color: #e09c34;
 }
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
 
 /* Features Section */
 .features {
@@ -162,4 +173,9 @@ footer {
   to {
     transform: translateY(0);
   }
+}
+.logo video {
+  width: 150px; /* Adjust size as needed */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 8px; /* Optional rounded corners */
 }
