@@ -1,62 +1,31 @@
-// Smooth scrolling for navigation links
-document.querySelectorAll('nav a').forEach(link => {
-  link.addEventListener('click', function (e) {
+// Navigation Smooth Scroll
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener("click", function (e) {
     e.preventDefault();
-    const targetId = this.getAttribute('href').substring(1);
-    const targetElement = document.getElementById(targetId);
-    targetElement.scrollIntoView({ behavior: 'smooth' });
+    document.querySelector(this.getAttribute("href")).scrollIntoView({
+      behavior: "smooth",
+    });
   });
 });
 
-// Product data
-const products = [
-  { name: 'Luxury Watch', price: 499.99, image: 'assets/watch.jpg' },
-  { name: 'Designer Bag', price: 1299.99, image: 'assets/bag.jpg' },
-  { name: 'Elegant Shoes', price: 899.99, image: 'assets/shoes.jpg' },
-];
-
-// Render products
-const productsContainer = document.querySelector('.products');
+// Dynamic Product Highlight
+const products = document.querySelectorAll('.product');
 products.forEach(product => {
-  const productElement = document.createElement('div');
-  productElement.className = 'product';
-  productElement.innerHTML = `
-    <img src="${product.image}" alt="${product.name}">
-    <h3>${product.name}</h3>
-    <p>$${product.price.toFixed(2)}</p>
-  `;
-  productsContainer.appendChild(productElement);
+  product.addEventListener('mouseover', () => {
+    product.style.transform = 'scale(1.05)';
+    product.style.boxShadow = '0 8px 12px rgba(0, 0, 0, 0.2)';
+  });
+  product.addEventListener('mouseout', () => {
+    product.style.transform = 'scale(1)';
+    product.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+  });
 });
 
-// Back-to-top button functionality
-const backToTop = document.createElement('button');
-backToTop.textContent = '↑';
-backToTop.className = 'back-to-top';
-document.body.appendChild(backToTop);
-
-backToTop.addEventListener('click', () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-
-window.addEventListener('scroll', () => {
-  backToTop.style.display = window.scrollY > 300 ? 'block' : 'none';
-});
-
-// Contact form validation
-const form = document.querySelector('form');
-form.addEventListener('submit', function (e) {
-  e.preventDefault();
-  const name = form.querySelector('[name="name"]').value.trim();
-  const email = form.querySelector('[name="email"]').value.trim();
-  const message = form.querySelector('[name="message"]').value.trim();
-
-  if (!name || !email || !message) {
-    alert('Please fill in all fields.');
-  } else if (!/\S+@\S+\.\S+/.test(email)) {
-    alert('Please enter a valid email address.');
-  } else {
-    alert('Thank you for your message!');
-    form.reset();
-  }
-});
-
+// Pop-up Message for Contact Form Submission
+const contactForm = document.querySelector('form');
+if (contactForm) {
+  contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Thank you for reaching out! We’ll get back to you soon.');
+  });
+}
