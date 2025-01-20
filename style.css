@@ -46,15 +46,15 @@ header nav ul li a:hover {
 
 /* Hero Section */
 .hero {
-  background: linear-gradient(rgba(19, 19, 19, 19), rgba(19, 19, 19, 19)), url('assets/logo.mp4') no-repeat center/cover;
-  color: #191919;
+  background: url('assets/logo.mp4') no-repeat center/cover;
+  color: #fff;
   text-align: center;
-  padding: 4rem 1rem;
-  animation: fadeIn 2s ease;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  animation: fadeIn 2s ease;
 }
 .hero h1 {
   font-size: 3rem;
@@ -76,13 +76,6 @@ header nav ul li a:hover {
 .hero button:hover {
   transform: scale(1.1);
   background-color: #e09c34;
-}
-.hero-logo {
-  width: 250px;
-  height: auto;
-  margin-bottom: 1.5rem;
-  border-radius: 8px; /* Optional rounded corners */
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('assets/hero-bg.jpg') no-repeat center/cover;
 }
 
 /* Features Section */
