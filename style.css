@@ -48,7 +48,7 @@ header nav ul li a:hover {
 /* Hero Section */
 .hero {
   background: url('Assets/logo.mp4') no-repeat center/cover;
-  color: #191919;
+  color: #25,25,25;
   text-align: center;
   padding: 4rem 1rem;
   display: flex;
