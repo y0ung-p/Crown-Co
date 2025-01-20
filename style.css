@@ -57,6 +57,11 @@ header nav ul li a:hover {
   justify-content: center;
   background-size: cover;
 }
+.logo {
+  max-width: 100%; /* Ensures the logo doesn't exceed the hero width */
+  max-height: 100%; /* Ensures the logo doesn't exceed the hero height */
+  object-fit: contain; /* Keeps the aspect ratio of the logo */
+}
 
 .hero-content {
   max-width: 800px;
