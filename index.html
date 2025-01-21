@@ -7,17 +7,17 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="popup" id="popup">
+<div class="popup" id="signup-popup">
   <div class="popup-content">
-    <button class="close-popup" id="closePopup">&times;</button>
-   <img src="Assets/discount.png" alt="10% Off Discount">
-    <h2>Sign Up for 10% Off</h2>
-    <form id="signupForm">
-      <input type="email" placeholder="Enter your email" required>
-      <button type="submit">Sign Up</button>
-    </form>
+    <button class="close-popup" onclick="closePopup()">×</button>
+    <img src="Assets/discount.png" alt="10% Off Discount">
+    <h2>Get 10% Off Your First Order!</h2>
+    <p>Sign up now to unlock this exclusive deal.</p>
+    <input type="email" id="email" placeholder="Enter your email">
+    <button onclick="submitForm()">Sign Up</button>
   </div>
 </div>
+
 
   <header>
     <div class="logo">Noble House</div>
