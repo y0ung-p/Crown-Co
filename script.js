@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Show the popup after a delay
     setTimeout(() => {
       popup.classList.add("active");
-    }, 3000); // 3 seconds delay
+    }, 5000); // 3 seconds delay
   }
 
   // Close popup when clicking the close button
