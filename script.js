@@ -50,10 +50,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Check localStorage to see if the popup has been closed before
   if (!localStorage.getItem("popupClosed")) {
-    // Show the popup after a delay
+    // Show the popup after a delay of 10 seconds
     setTimeout(() => {
       popup.classList.add("active");
-    }, 5000); // 3 seconds delay
+    }, 10000); // 10 seconds delay
   }
 
   // Close popup when clicking the close button
@@ -61,5 +61,10 @@ document.addEventListener("DOMContentLoaded", () => {
     popup.classList.remove("active");
     // Set a flag in localStorage to prevent the popup from showing again
     localStorage.setItem("popupClosed", "true");
+  });
+
+  // Prevent adding multiple event listeners (safety check)
+  closeBtn.removeEventListener("click", () => {
+    popup.classList.remove("active");
   });
 });
