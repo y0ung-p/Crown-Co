@@ -44,29 +44,17 @@ styleSheet.insertRule(`
     }
   }
 `);
-// Wait for the DOM to fully load
 document.addEventListener("DOMContentLoaded", () => {
-  // Automatically show the pop-up after a delay
-  setTimeout(() => {
-    const popup = document.getElementById("signup-popup");
-    if (popup) {
-      popup.classList.add("active");
-    }
-  }, 2000); // Delay in milliseconds (e.g., 2000 = 2 seconds)
-
-  // Close the pop-up when the close button is clicked
-  const closeButton = document.querySelector(".close-popup");
-  if (closeButton) {
-    closeButton.addEventListener("click", () => {
-      const popup = document.getElementById("signup-popup");
-      if (popup) {
-        popup.classList.remove("active");
-      }
-    });
-  }
-});document.addEventListener("DOMContentLoaded", () => {
   const popup = document.getElementById("signup-popup");
-  if (popup) {
+  const closeBtn = document.getElementById("close-popup");
+
+  // Show popup after a delay
+  setTimeout(() => {
     popup.classList.add("active");
-  }
+  }, 3000); // 3 seconds delay
+
+  // Close popup when clicking the close button
+  closeBtn.addEventListener("click", () => {
+    popup.classList.remove("active");
+  });
 });
