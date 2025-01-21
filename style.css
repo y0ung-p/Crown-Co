@@ -1,3 +1,4 @@
+
 /* General Styles */
 * {
   margin: 0;
@@ -160,9 +161,6 @@ footer {
   padding: 1rem;
   margin-top: 2rem;
 }
-
-
-/* Popup Styles */
 .popup {
   position: fixed;
   top: 0;
@@ -178,47 +176,22 @@ footer {
   opacity: 0;
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
+
 .popup.active {
   visibility: visible;
   opacity: 1;
 }
+
 .popup-content {
   background: #fff;
   border-radius: 10px;
   padding: 20px;
   text-align: center;
-  position: relative;
   width: 400px;
   max-width: 90%;
+  position: relative;
 }
-.popup-content img {
-  width: 100%;
-  border-radius: 10px;
-  margin-bottom: 20px;
-}
-.popup-content h2 {
-  margin: 20px 0;
-  color: #333;
-}
-.popup-content input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-.popup-content button {
-  background-color: #f9c74f;
-  color: #222;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
-.popup-content button:hover {
-  background-color: #e09c34;
-}
+
 .close-popup {
   position: absolute;
   top: 10px;
@@ -226,7 +199,6 @@ footer {
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: #333;
   cursor: pointer;
 }
 
@@ -236,6 +208,7 @@ footer {
     opacity: 0;
   }
   to {
+
     opacity: 1;
   }
 }
@@ -247,4 +220,21 @@ footer {
     transform: translateY(0);
   }
 }
-
+const popup = document.getElementById("signup-popup");
+const data = {
+  popupRules: Array.from(document.styleSheets)
+    .flatMap(sheet => Array.from(sheet.cssRules))
+    .filter(rule => rule.selectorText?.includes(".popup"))
+    .map(rule => ({
+      selector: rule.selectorText,
+      styles: rule.style.cssText,
+    })),
+  activeRules: Array.from(document.styleSheets)
+    .flatMap(sheet => Array.from(sheet.cssRules))
+    .filter(rule => rule.selectorText?.includes(".active"))
+    .map(rule => ({
+      selector: rule.selectorText,
+      styles: rule.style.cssText,
+    })),
+  computedStyles: window.getComputedStyle(popup),
+};
