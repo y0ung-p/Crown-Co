@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const popup = document.getElementById("signup-popup");
   const closeBtn = document.getElementById("close-popup");
 
-  // Check localStorage to see if the popup has been closed before
+  // Check if popup has been closed before
   if (!localStorage.getItem("popupClosed")) {
     // Show the popup after a delay
     setTimeout(() => {
@@ -59,7 +59,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Close popup when clicking the close button
   closeBtn.addEventListener("click", () => {
     popup.classList.remove("active");
-    // Set a flag in localStorage to prevent the popup from showing again
-    localStorage.setItem("popupClosed", "true");
+    localStorage.setItem("popupClosed", "true"); // Prevent showing again
   });
 });
