@@ -220,3 +220,21 @@ footer {
     transform: translateY(0);
   }
 }
+const popup = document.getElementById("signup-popup");
+const data = {
+  popupRules: Array.from(document.styleSheets)
+    .flatMap(sheet => Array.from(sheet.cssRules))
+    .filter(rule => rule.selectorText?.includes(".popup"))
+    .map(rule => ({
+      selector: rule.selectorText,
+      styles: rule.style.cssText,
+    })),
+  activeRules: Array.from(document.styleSheets)
+    .flatMap(sheet => Array.from(sheet.cssRules))
+    .filter(rule => rule.selectorText?.includes(".active"))
+    .map(rule => ({
+      selector: rule.selectorText,
+      styles: rule.style.cssText,
+    })),
+  computedStyles: window.getComputedStyle(popup),
+};
