@@ -70,4 +70,10 @@ document.addEventListener("DOMContentLoaded", () => {
     popup.classList.add("active");
   }
 });
+function closeHandler() {
+  Enabler.reportManualClose(); 
+  Enabler.close();
+}
+
+document.getElementById('signup-popup').addEventListener('click', closeHandler, false);
 
