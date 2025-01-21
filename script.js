@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (popup) {
       popup.classList.add("active");
     }
-  }, 2); // Delay in milliseconds (e.g., 2000 = 2 seconds)
+  }, 2000); // Delay in milliseconds (e.g., 2000 = 2 seconds)
 
   // Close the pop-up when the close button is clicked
   const closeButton = document.querySelector(".close-popup");
@@ -70,10 +70,3 @@ document.addEventListener("DOMContentLoaded", () => {
     popup.classList.add("active");
   }
 });
-function closeHandler() {
-  Enabler.reportManualClose(); 
-  Enabler.close();
-}
-
-document.getElementById('signup-popup').addEventListener('click', closeHandler, false);
-
