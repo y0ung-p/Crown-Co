@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (popup) {
       popup.classList.add("active");
     }
-  }, 2000); // Delay in milliseconds (e.g., 2000 = 2 seconds)
+  }, 2); // Delay in milliseconds (e.g., 2000 = 2 seconds)
 
   // Close the pop-up when the close button is clicked
   const closeButton = document.querySelector(".close-popup");
