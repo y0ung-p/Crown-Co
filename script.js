@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
       console.log("Popup displayed.");
       popup.classList.add("active");
-    }, 10000); // 10 seconds delay
+    }, 1000000); // 10 seconds delay
   } else {
     console.log("Popup will not show as it is already closed.");
   }
