@@ -64,4 +64,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+});document.addEventListener("DOMContentLoaded", () => {
+  const popup = document.getElementById("signup-popup");
+  if (popup) {
+    popup.classList.add("active");
+  }
 });
+
