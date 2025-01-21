@@ -51,24 +51,22 @@ document.addEventListener("DOMContentLoaded", () => {
   // Check if the popup has been closed before using localStorage
   const popupClosed = localStorage.getItem("popupClosed");
 
-  // Debugging: Log the initial state
-  console.log("Popup closed state in localStorage:", popupClosed);
-
-  // If the popup hasn't been closed before, show it after a delay
+  // Show the popup after a delay if it hasn't been closed before
   if (!popupClosed) {
-    console.log("Popup will show after a delay.");
     setTimeout(() => {
       popup.classList.add("active");
-      console.log("Popup displayed.");
     }, 10000); // 10-second delay
-  } else {
-    console.log("Popup will not show as it has been closed before.");
   }
 
   // Handle the close button click
   closeBtn.addEventListener("click", () => {
-    console.log("Popup closed by user.");
     popup.classList.remove("active");
-    localStorage.setItem("popupClosed", "true"); // Prevent it from showing again
+    localStorage.setItem("popupClosed", "true"); // Store in localStorage to prevent reopening
   });
+
+  // Prevent the popup from reopening even after page refresh if already closed
+  if (popupClosed) {
+    popup.classList.remove("active");
+  }
 });
+
