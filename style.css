@@ -168,18 +168,14 @@ footer {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
-  display: flex;
+  display: none; /* Hidden by default */
   justify-content: center;
   align-items: center;
   z-index: 2000;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .popup.active {
-  visibility: visible;
-  opacity: 1;
+  display: flex; /* Show popup when active */
 }
 
 .popup-content {
@@ -192,6 +188,12 @@ footer {
   position: relative;
 }
 
+.popup-image {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 15px;
+}
+
 .close-popup {
   position: absolute;
   top: 10px;
@@ -201,6 +203,7 @@ footer {
   font-size: 1.5rem;
   cursor: pointer;
 }
+
 
 /* Animations */
 @keyframes fadeIn {
