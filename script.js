@@ -48,8 +48,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const popup = document.getElementById("signup-popup");
   const closeBtn = document.getElementById("close-popup");
 
-  // Show the popup immediately for testing
-  popup.classList.add("active");
+  // Show the popup after a 3-second delay
+  setTimeout(() => {
+    popup.classList.add("active");
+  }, 3000);
 
   // Close popup when clicking the close button
   closeBtn.addEventListener("click", () => {
@@ -57,3 +59,4 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Popup closed!");
   });
 });
+
