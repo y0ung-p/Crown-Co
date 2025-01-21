@@ -48,25 +48,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const popup = document.getElementById("signup-popup");
   const closeBtn = document.getElementById("close-popup");
 
-  // Check if the popup has been closed before using localStorage
-  const popupClosed = localStorage.getItem("popupClosed");
-
-  // Show the popup after a delay if it hasn't been closed before
-  if (!popupClosed) {
+  // Check localStorage to see if the popup has been closed before
+  if (!localStorage.getItem("popupClosed")) {
+    // Show the popup after a delay
     setTimeout(() => {
       popup.classList.add("active");
-    }, 10000); // 10-second delay
+    }, 3000); // 3 seconds delay
   }
 
-  // Handle the close button click
+  // Close popup when clicking the close button
   closeBtn.addEventListener("click", () => {
     popup.classList.remove("active");
-    localStorage.setItem("popupClosed", "true"); // Store in localStorage to prevent reopening
+    // Set a flag in localStorage to prevent the popup from showing again
+    localStorage.setItem("popupClosed", "true");
   });
-
-  // Prevent the popup from reopening even after page refresh if already closed
-  if (popupClosed) {
-    popup.classList.remove("active");
-  }
 });
-
