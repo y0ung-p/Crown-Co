@@ -167,11 +167,12 @@ footer {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.9); /* Darker overlay */
   display: none; /* Hidden by default */
   justify-content: center;
   align-items: center;
   z-index: 2000;
+  animation: fadeIn 0.5s ease-out;
 }
 
 .popup.active {
@@ -179,12 +180,15 @@ footer {
 }
 
 .popup-content {
-  background: #fff;
-  border-radius: 10px;
-  padding: 20px;
+  background: linear-gradient(135deg, #f9c74f, #f9844a); /* Gradient background */
+  border-radius: 15px;
+  padding: 30px;
   text-align: center;
   width: 400px;
   max-width: 90%;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+  animation: scaleUp 0.4s ease-out;
+  transform-origin: center;
   position: relative;
 }
 
@@ -192,16 +196,85 @@ footer {
   max-width: 100%;
   height: auto;
   margin-bottom: 15px;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Shadow for image */
+}
+
+.popup-content form {
+  margin-top: 20px;
+}
+
+.popup-content input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.8);
+  color: #333;
+}
+
+.popup-content button[type="submit"] {
+  background-color: #fff;
+  color: #222;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.popup-content button[type="submit"]:hover {
+  background-color: #e09c34;
+  transform: scale(1.05);
 }
 
 .close-popup {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
+  top: 15px;
+  right: 15px;
+  background: #fff;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  color: #222;
+  font-weight: bold;
   cursor: pointer;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.close-popup:hover {
+  transform: rotate(90deg) scale(1.1);
+  background: #f9c74f;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0.8);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 
 
