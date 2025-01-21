@@ -44,23 +44,20 @@ styleSheet.insertRule(`
     }
   }
 `);
-document.addEventListener('DOMContentLoaded', () => {
-  const popup = document.getElementById('popup');
-  const closePopup = document.getElementById('closePopup');
-
-  // Show the popup after 3 seconds
+// Show the pop-up when the page loads
+window.onload = function () {
   setTimeout(() => {
-    popup.classList.add('active');
-  }, 3000);
+    document.getElementById("signup-popup").classList.add("active");
+  }, 2000); // Show after 2 seconds
+};
 
-  // Close the popup when the close button is clicked
-  closePopup.addEventListener('click', () => {
-    popup.classList.remove('active');
-  });
+// Close the pop-up
+function closePopup() {
+  document.getElementById("signup-popup").classList.remove("active");
+}
 
-  // Close the popup when clicking outside of it
-  popup.addEventListener('click', (e) => {
-    if (e.target === popup) {
-      popup.classList.remove('active');
-    }
-  });
+// Submit the form (example action)
+function submitForm() {
+  alert("Thank you for signing up!");
+  closePopup();
+}
