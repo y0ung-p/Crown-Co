@@ -137,7 +137,9 @@
 
       authForm.addEventListener("submit", (e) => {
         e.preventDefault();
-
+       
+        const firstname = document.getElementById("first name").value;
+        const lastname = document.getElementById("Last name").value;
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
 
