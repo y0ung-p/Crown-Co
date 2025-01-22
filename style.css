@@ -257,6 +257,12 @@ footer {
   transform: rotate(90deg) scale(1.1);
   background: #f9c74f;
 }
+.popup-image {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 1rem;
+  border-radius: 10px; /* Optional: Add rounded corners for a modern look */
+}
 
 /* Animations */
 @keyframes fadeIn {
