@@ -101,18 +101,23 @@
       <span id="toggle-message">Already have an account?</span>
       <a href="Login-form" id="toggle-link">Login</a>
     </div>
-  <div class="container">
-    <form id="login-form">
-      <input type="email" id="login-email" placeholder="Enter your email" required />
-      <input type="password" id="login-password" placeholder="Enter your password" required />
-      <button type="submit">Login</button>
-      <p id="login-error-message" style="color: red; display: none;">Invalid login. Please try again.</p>
+ <div class="container">
+    <h1 id="form-title">Login</h1>
+    <form id="auth-form">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+      <button type="submit">Submit</button>
     </form>
+
+    <div class="toggle">
+      <span id="toggle-message">Don't have an account?</span>
+      <a href="#" id="toggle-link">Sign up</a>
     </div>
-<div class="toggle">
-      <span id="toggle-message">Dont have an acount?</span>
-      <a href="signup-form" id="toggle-link">Signup</a>
-</div>
+  </div>
   
 </body>
 </html>
