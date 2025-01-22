@@ -102,48 +102,5 @@
       <a href="#" id="toggle-link">Login</a>
     </div>
   </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const formTitle = document.getElementById("form-title");
-      const authForm = document.getElementById("auth-form");
-      const toggleMessage = document.getElementById("toggle-message");
-      const toggleLink = document.getElementById("toggle-link");
-
-      let isLogin = false;
-
-      toggleLink.addEventListener("click", (e) => {
-        e.preventDefault();
-        isLogin = !isLogin;
-
-        if (isLogin) {
-          formTitle.textContent = "Login";
-          toggleMessage.textContent = "Don't have an account?";
-          toggleLink.textContent = "Signup";
-        } else {
-          formTitle.textContent = "Signup";
-          toggleMessage.textContent = "Already have an account?";
-          toggleLink.textContent = "Login";
-        }
-      });
-
-      authForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-       
-        const firstname = document.getElementById("first name").value;
-        const lastname = document.getElementById("Last name").value;
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-
-        if (isLogin) {
-          alert(`Logging in with:\nEmail: ${email}`);
-        } else {
-          alert(`Signing up with:\nEmail: ${email}`);
-        }
-
-        authForm.reset();
-      });
-    });
-  </script>
 </body>
 </html>
