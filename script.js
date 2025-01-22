@@ -47,11 +47,12 @@ styleSheet.insertRule(`
 document.addEventListener("DOMContentLoaded", () => {
   const popup = document.getElementById("signup-popup");
   const closeBtn = document.getElementById("close-popup");
+  const form = document.getElementById("signup-form");
 
-  // Check if the popup has been closed before
-  const isPopupClosed = localStorage.getItem("popupClosed") === "true";
+  // Check if the popup has been handled before
+  const isPopupHandled = localStorage.getItem("popupHandled") === "true";
 
-  if (!isPopupClosed) {
+  if (!isPopupHandled) {
     // Show the popup after a delay
     setTimeout(() => {
       popup.classList.add("active");
@@ -62,6 +63,16 @@ document.addEventListener("DOMContentLoaded", () => {
   closeBtn.addEventListener("click", () => {
     popup.classList.remove("active");
     // Store the closed status in localStorage
-    localStorage.setItem("popupClosed", "true");
+    localStorage.setItem("popupHandled", "true");
+  });
+
+  // Handle form submission
+  form.addEventListener("submit", (event) => {
+    event.preventDefault(); // Prevent default form submission for testing
+    popup.classList.remove("active");
+    // Store the handled status in localStorage
+    localStorage.setItem("popupHandled", "true");
+    alert("Thank you for signing up!"); // Optional success message
   });
 });
+
