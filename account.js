@@ -1,16 +1,3 @@
-// Firebase Config (Replace with your project's credentials)
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-
 // Signup Function
 document.getElementById('signup-form').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -52,7 +39,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 
     if (userDoc.exists) {
       const userData = userDoc.data();
-      alert('Welcome back, ' + userData.firstName + ' ' + userData.lastName + '!');
+      alert('Welcome back, ' + (userData.firstName || 'User') + '!');
       // Redirect to user dashboard or personalized menu
     } else {
       console.error('User data not found!');
@@ -62,4 +49,3 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     alert(error.message);
   }
 });
-
