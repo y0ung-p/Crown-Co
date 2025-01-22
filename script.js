@@ -48,19 +48,30 @@ document.addEventListener("DOMContentLoaded", () => {
   const popup = document.getElementById("signup-popup");
   const closeBtn = document.getElementById("close-popup");
 
-  // Check if the popup has been closed before using localStorage
+  // Check localStorage to see if the popup has been closed before
   if (!localStorage.getItem("popupClosed")) {
+    // Show the popup after a delay
     setTimeout(() => {
       popup.classList.add("active");
-    }, 3000); // Show the popup after a delay of 3 seconds
+    }, 3000); // 3 seconds delay
   }
 
   // Close popup when clicking the close button
   closeBtn.addEventListener("click", () => {
     popup.classList.remove("active");
-    // Set a flag in localStorage to mark the popup as seen
+    // Set a flag in localStorage to prevent the popup from showing again
     localStorage.setItem("popupClosed", "true");
   });
-});
 
+  // Prevent form submission from refreshing the page
+  const form = document.querySelector("#signup-popup form");
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      alert("Thank you for signing up!");
+      popup.classList.remove("active");
+      localStorage.setItem("popupClosed", "true");
+    });
+  }
+});
 
