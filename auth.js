@@ -47,3 +47,42 @@ export async function login(email, password) {
     alert(error.message);
   }
 }
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
+const auth = getAuth();
+
+// Check User Authentication Status on Page Load
+window.addEventListener("load", () => {
+  const accountLink = document.querySelector(".navbar a[href='account.html']");
+  const logoutBtn = document.getElementById("logout-btn");
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is logged in
+      localStorage.setItem("userId", user.uid); // Store user ID for session management
+      accountLink.textContent = "Dashboard"; // Update "Account" link to "Dashboard"
+      logoutBtn.style.display = "inline-block"; // Show Logout Button
+    } else {
+      // User is not logged in
+      localStorage.removeItem("userId");
+      accountLink.textContent = "Account"; // Default back to "Account"
+      logoutBtn.style.display = "none"; // Hide Logout Button
+    }
+  });
+});
+
+// Logout Functionality
+if (document.getElementById("logout-btn")) {
+  document.getElementById("logout-btn").addEventListener("click", () => {
+    signOut(auth)
+      .then(() => {
+        localStorage.removeItem("userId");
+        alert("Logged out successfully!");
+        window.location.href = "login-page.html";
+      })
+      .catch((error) => {
+        console.error("Logout Error:", error);
+      });
+  });
+}
+
