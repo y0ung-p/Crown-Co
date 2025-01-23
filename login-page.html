@@ -36,6 +36,11 @@
       display: flex;
       flex-direction: column;
       gap: 15px;
+      display: none; /* Initially hidden */
+    }
+
+    form.active {
+      display: flex; /* Show only the active form */
     }
 
     label {
@@ -79,6 +84,7 @@
     .toggle a {
       color: #007bff;
       text-decoration: none;
+      cursor: pointer;
     }
 
     .toggle a:hover {
@@ -89,7 +95,9 @@
 <body>
   <div class="container">
     <h1 id="form-title">Signup</h1>
-    <form id="signup-form">
+
+    <!-- Signup Form -->
+    <form id="signup-form" class="active">
       <input type="text" id="signup-first-name" placeholder="First Name" required />
       <input type="text" id="signup-last-name" placeholder="Last Name" required />
       <input type="email" id="signup-email" placeholder="Email" required />
@@ -97,17 +105,18 @@
       <button type="submit">Sign Up</button>
     </form>
 
-    <div class="toggle">
-      <span id="toggle-message">Already have an account?</span>
-      <a href="#" id="toggle-link">Login</a>
-    </div>
-
+    <!-- Login Form -->
     <form id="login-form">
-      <input type="email" id="login-email" placeholder="Enter your email" required />
-      <input type="password" id="login-password" placeholder="Enter your password" required />
+      <input type="email" id="login-email" placeholder="Email" required />
+      <input type="password" id="login-password" placeholder="Password" required />
       <button type="submit">Login</button>
       <p id="login-error-message" style="color: red; display: none;">Invalid login. Please try again.</p>
     </form>
+
+    <div class="toggle">
+      <span id="toggle-message">Already have an account?</span>
+      <a id="toggle-link">Login</a>
+    </div>
   </div>
 </body>
 </html>
