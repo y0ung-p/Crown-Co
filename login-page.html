@@ -106,13 +106,16 @@
     </form>
 
     <!-- Login Form -->
-    <form id="login-form">
-      <input type="email" id="login-email" placeholder="Email" required />
-      <input type="password" id="login-password" placeholder="Password" required />
-      <button type="submit">Login</button>
-      <p id="login-error-message" style="color: red; display: none;">Invalid login. Please try again.</p>
-    </form>
-
+   <form id="login-form">
+  <input type="email" id="login-email" placeholder="Email" required />
+  <input type="password" id="login-password" placeholder="Password" required />
+  <div>
+    <input type="checkbox" id="remember-me" />
+    <label for="remember-me">Remember Me</label>
+  </div>
+  <button type="submit">Login</button>
+  <p id="login-error-message" style="color: red; display: none;"></p>
+</form>
     <div class="toggle">
       <span id="toggle-message">Already have an account?</span>
       <a id="toggle-link">Login</a>
