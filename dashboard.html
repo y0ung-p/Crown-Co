@@ -3,126 +3,182 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>Crown Co Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    /* Same styling as in your code */
+    /* Global Styles */
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
-      background: linear-gradient(to right, #4facfe, #00f2fe);
       color: #fff;
-      overflow-x: hidden;
-    }
-    /* ... Other styles ... */
-    .welcome h2, .account-info {
-      text-transform: capitalize;
-    }
-    .logout {
-      cursor: pointer;
-      background-color: #e63946;
-      padding: 10px 20px;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      font-weight: bold;
-      transition: 0.3s;
+      background-color: #141414;
+      display: flex;
+      min-height: 100vh;
     }
 
-    .logout:hover {
-      background-color: #d62828;
+    /* Sidebar Styles */
+    .sidebar {
+      width: 250px;
+      background: #1f1f1f;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .sidebar h1 {
+      font-size: 1.8rem;
+      margin: 0;
+      color: #00f2fe;
+      text-align: center;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 1rem;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    .sidebar a:hover {
+      background: #00f2fe;
+      color: #000;
+    }
+
+    .sidebar a.active {
+      background: #4facfe;
+      color: #000;
+    }
+
+    /* Main Content Styles */
+    .main-content {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h2 {
+      font-size: 1.8rem;
+    }
+
+    .header .profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header .profile img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid #00f2fe;
+    }
+
+    /* Dashboard Cards */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #1f1f1f;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.8);
+    }
+
+    .card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 1rem;
+      color: #ddd;
+    }
+
+    .card i {
+      font-size: 2rem;
+      color: #00f2fe;
+      margin-bottom: 10px;
+    }
+
+    /* Footer Styles */
+    footer {
+      text-align: center;
+      padding: 10px;
+      color: #ddd;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Crown Co Dashboard</h1>
-    <nav>
-      <a href="#" id="profile-link">Profile</a>
-      <a href="#" id="settings-link">Settings</a>
-      <a href="#" id="help-link">Help</a>
-      <button id="logout-button" class="logout">Logout</button>
-    </nav>
-  </header>
-
-  <div class="welcome">
-    <h2 id="welcome-message">Welcome!</h2>
-    <p>Your personalized dashboard is here to empower your experience.</p>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h1>Crown Co</h1>
+    <a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a>
+    <a href="#"><i class="fas fa-user"></i> Profile</a>
+    <a href="#"><i class="fas fa-tasks"></i> Tasks</a>
+    <a href="#"><i class="fas fa-cog"></i> Settings</a>
+    <a href="logout.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
   </div>
 
-  <div id="account-info" class="account-info">
-    <!-- User info will populate here -->
-  </div>
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="header">
+      <h2>Welcome Back, User!</h2>
+      <div class="profile">
+        <img src="Assets/avatar.png" alt="Profile Picture">
+        <span>John Doe</span>
+      </div>
+    </div>
 
-  <div class="features">
-    <div class="feature-card">
-      <img src="Assets/stats-icon.png" alt="Statistics">
-      <h3>Statistics</h3>
-      <p>Analyze your data and track your performance effortlessly.</p>
-    </div>
-    <div class="feature-card">
-      <img src="Assets/tasks-icon.png" alt="Tasks">
-      <h3>Task Manager</h3>
-      <p>Organize your tasks and stay on top of your goals.</p>
-    </div>
-    <div class="feature-card">
-      <img src="Assets/support-icon.png" alt="Support">
-      <h3>Support</h3>
-      <p>Need help? Get in touch with our 24/7 support team.</p>
-    </div>
-    <div class="feature-card">
-      <img src="Assets/rewards-icon.png" alt="Rewards">
-      <h3>Rewards</h3>
-      <p>Earn rewards for your milestones and achievements.</p>
+    <div class="cards">
+      <div class="card">
+        <i class="fas fa-chart-line"></i>
+        <h3>Statistics</h3>
+        <p>View your recent activity and progress.</p>
+      </div>
+      <div class="card">
+        <i class="fas fa-tasks"></i>
+        <h3>Tasks</h3>
+        <p>Manage your tasks and daily goals.</p>
+      </div>
+      <div class="card">
+        <i class="fas fa-gift"></i>
+        <h3>Rewards</h3>
+        <p>Check out your achievements and rewards.</p>
+      </div>
+      <div class="card">
+        <i class="fas fa-question-circle"></i>
+        <h3>Support</h3>
+        <p>Get help and support anytime.</p>
+      </div>
     </div>
   </div>
 
   <footer>
-    <p>&copy; 2025 Crown Co. All rights reserved. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    &copy; 2025 Crown Co. All rights reserved.
   </footer>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      const userId = localStorage.getItem('userId'); // Retrieve stored UID
-
-      if (!userId) {
-        alert('No user found. Please log in.');
-        window.location.href = 'index.html'; // Redirect if no user is logged in
-        return;
-      }
-
-      try {
-        // Fetch user data from Firestore
-        const userDoc = await firebase.firestore().collection('users').doc(userId).get();
-
-        if (userDoc.exists) {
-          const userData = userDoc.data();
-
-          // Populate welcome message and account info
-          document.getElementById('welcome-message').textContent = `Welcome, ${userData.firstName || 'User'}!`;
-          document.getElementById('account-info').innerHTML = `
-            <h3>Your Account Info:</h3>
-            <p><strong>Name:</strong> ${userData.firstName || 'N/A'} ${userData.lastName || ''}</p>
-            <p><strong>Email:</strong> ${userData.email}</p>
-            <p><strong>Joined:</strong> ${new Date(userData.createdAt).toLocaleDateString()}</p>
-          `;
-        } else {
-          alert('User data not found!');
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error.message);
-      }
-    });
-
-    // Logout functionality
-    document.getElementById('logout-button').addEventListener('click', () => {
-      firebase.auth().signOut().then(() => {
-        localStorage.removeItem('userId'); // Clear stored UID
-        window.location.href = 'index.html'; // Redirect to login page
-      }).catch((error) => {
-        console.error('Logout error:', error.message);
-      });
-    });
-  </script>
 </body>
 </html>
