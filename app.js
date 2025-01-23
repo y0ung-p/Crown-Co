@@ -16,25 +16,21 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Form and Toggle Logic
+// Toggle Logic
 const signupForm = document.getElementById("signup-form");
 const loginForm = document.getElementById("login-form");
 const toggleMessage = document.getElementById("toggle-message");
 const toggleLink = document.getElementById("toggle-link");
 const formTitle = document.getElementById("form-title");
-const loginErrorMessage = document.getElementById("login-error-message");
 
-// Event Listener for Toggle Link
 toggleLink.addEventListener("click", () => {
   if (signupForm.classList.contains("active")) {
-    // Switch to Login
     signupForm.classList.remove("active");
     loginForm.classList.add("active");
     formTitle.textContent = "Login";
     toggleMessage.textContent = "Don't have an account yet?";
     toggleLink.textContent = "Signup";
   } else {
-    // Switch to Signup
     loginForm.classList.remove("active");
     signupForm.classList.add("active");
     formTitle.textContent = "Signup";
@@ -42,7 +38,6 @@ toggleLink.addEventListener("click", () => {
     toggleLink.textContent = "Login";
   }
 });
-
 // Signup Form Submission
 signupForm.addEventListener("submit", async (e) => {
   e.preventDefault();
