@@ -6,6 +6,7 @@
   <title>Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
+    /* Same styling as in your code */
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
@@ -13,114 +14,23 @@
       color: #fff;
       overflow-x: hidden;
     }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #1a1a2e;
-      padding: 15px 30px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    /* ... Other styles ... */
+    .welcome h2, .account-info {
+      text-transform: capitalize;
+    }
+    .logout {
+      cursor: pointer;
+      background-color: #e63946;
+      padding: 10px 20px;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: 0.3s;
     }
 
-    header h1 {
-      font-size: 1.8rem;
-      font-weight: 800;
-      margin: 0;
-    }
-
-    header nav {
-      display: flex;
-      gap: 20px;
-    }
-
-    header nav a {
-      text-decoration: none;
-      color: #00f2fe;
-      font-weight: 600;
-      transition: color 0.3s;
-    }
-
-    header nav a:hover {
-      color: #4facfe;
-    }
-
-    .welcome {
-      text-align: center;
-      margin: 30px 0;
-    }
-
-    .welcome h2 {
-      font-size: 2.5rem;
-      margin: 10px 0;
-      font-weight: 800;
-    }
-
-    .welcome p {
-      font-size: 1.2rem;
-      color: #e0e0e0;
-    }
-
-    .features {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 30px;
-      padding: 20px;
-    }
-
-    .feature-card {
-      background: #1a1a2e;
-      border-radius: 15px;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-      width: 300px;
-      padding: 20px;
-      text-align: center;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .feature-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-    }
-
-    .feature-card img {
-      width: 60px;
-      height: 60px;
-      margin-bottom: 15px;
-    }
-
-    .feature-card h3 {
-      font-size: 1.5rem;
-      font-weight: 800;
-      margin-bottom: 10px;
-    }
-
-    .feature-card p {
-      font-size: 1rem;
-      color: #d3d3d3;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #1a1a2e;
-      color: #d3d3d3;
-    }
-
-    footer p {
-      margin: 0;
-      font-size: 0.9rem;
-    }
-
-    footer a {
-      color: #00f2fe;
-      text-decoration: none;
-      transition: color 0.3s;
-    }
-
-    footer a:hover {
-      color: #4facfe;
+    .logout:hover {
+      background-color: #d62828;
     }
   </style>
 </head>
@@ -128,16 +38,20 @@
   <header>
     <h1>Crown Co Dashboard</h1>
     <nav>
-      <a href="#">Profile</a>
-      <a href="#">Settings</a>
-      <a href="#">Help</a>
-      <a href="logout.html">Logout</a>
+      <a href="#" id="profile-link">Profile</a>
+      <a href="#" id="settings-link">Settings</a>
+      <a href="#" id="help-link">Help</a>
+      <button id="logout-button" class="logout">Logout</button>
     </nav>
   </header>
 
   <div class="welcome">
-    <h2>Welcome Back!</h2>
+    <h2 id="welcome-message">Welcome!</h2>
     <p>Your personalized dashboard is here to empower your experience.</p>
+  </div>
+
+  <div id="account-info" class="account-info">
+    <!-- User info will populate here -->
   </div>
 
   <div class="features">
@@ -162,49 +76,53 @@
       <p>Earn rewards for your milestones and achievements.</p>
     </div>
   </div>
-  <script>
-  document.addEventListener('DOMContentLoaded', async () => {
-    const userId = localStorage.getItem('userId'); // Retrieve stored UID
-
-    if (!userId) {
-      alert('No user found. Please log in.');
-      window.location.href = 'index.html'; // Redirect if no user is logged in
-      return;
-    }
-
-    try {
-      // Fetch user data from Firestore
-      const userDoc = await firebase.firestore().collection('users').doc(userId).get();
-
-      if (userDoc.exists) {
-        const userData = userDoc.data();
-
-        // Populate dashboard elements with user data
-        document.getElementById('welcome-message').textContent = `Welcome, ${userData.firstName || 'User'}!`;
-        document.getElementById('account-info').innerHTML = `
-          <p><strong>Name:</strong> ${userData.firstName || 'N/A'} ${userData.lastName || ''}</p>
-          <p><strong>Email:</strong> ${userData.email}</p>
-          <p><strong>Joined:</strong> ${userData.createdAt?.toDate().toLocaleString() || 'Unknown'}</p>
-        `;
-      } else {
-        alert('User data not found!');
-      }
-    } catch (error) {
-      console.error('Error fetching user data:', error.message);
-    }
-  });
-
-  // Log out function
-  document.getElementById('logout-button').addEventListener('click', () => {
-    firebase.auth().signOut().then(() => {
-      localStorage.removeItem('userId'); // Clear stored UID
-      window.location.href = 'index.html'; // Redirect to login page
-    });
-  });
-</script>
 
   <footer>
     <p>&copy; 2025 Crown Co. All rights reserved. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
   </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const userId = localStorage.getItem('userId'); // Retrieve stored UID
+
+      if (!userId) {
+        alert('No user found. Please log in.');
+        window.location.href = 'index.html'; // Redirect if no user is logged in
+        return;
+      }
+
+      try {
+        // Fetch user data from Firestore
+        const userDoc = await firebase.firestore().collection('users').doc(userId).get();
+
+        if (userDoc.exists) {
+          const userData = userDoc.data();
+
+          // Populate welcome message and account info
+          document.getElementById('welcome-message').textContent = `Welcome, ${userData.firstName || 'User'}!`;
+          document.getElementById('account-info').innerHTML = `
+            <h3>Your Account Info:</h3>
+            <p><strong>Name:</strong> ${userData.firstName || 'N/A'} ${userData.lastName || ''}</p>
+            <p><strong>Email:</strong> ${userData.email}</p>
+            <p><strong>Joined:</strong> ${new Date(userData.createdAt).toLocaleDateString()}</p>
+          `;
+        } else {
+          alert('User data not found!');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error.message);
+      }
+    });
+
+    // Logout functionality
+    document.getElementById('logout-button').addEventListener('click', () => {
+      firebase.auth().signOut().then(() => {
+        localStorage.removeItem('userId'); // Clear stored UID
+        window.location.href = 'index.html'; // Redirect to login page
+      }).catch((error) => {
+        console.error('Logout error:', error.message);
+      });
+    });
+  </script>
 </body>
 </html>
