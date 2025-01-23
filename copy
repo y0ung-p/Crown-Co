@@ -1,12 +1,77 @@
-div class="container">
-    <form id="login-form">
-      <input type="email" id="login-email" placeholder="Enter your email" required />
-      <input type="password" id="login-password" placeholder="Enter your password" required />
-      <button type="submit">Login</button>
-      <p id="login-error-message" style="color: red; display: none;">Invalid login. Please try again.</p>
-    </form>
-    </div>
-<div class="toggle">
-      <span id="toggle-message">Dont have an acount?</span>
-      <a href="signup-form" id="toggle-link">Signup</a>
-</div>
+body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    input {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+
+    button {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .toggle {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+
+    .toggle a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .toggle a:hover {
+      text-decoration: underline;
+    }
