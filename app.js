@@ -1,6 +1,13 @@
 // Import Firebase if you're using modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  setPersistence, 
+  browserLocalPersistence, 
+  browserSessionPersistence 
+} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
 
 // Firebase Configuration
 const firebaseConfig = {
@@ -16,13 +23,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Toggle Logic
+// DOM Elements
 const signupForm = document.getElementById("signup-form");
 const loginForm = document.getElementById("login-form");
 const toggleMessage = document.getElementById("toggle-message");
 const toggleLink = document.getElementById("toggle-link");
 const formTitle = document.getElementById("form-title");
+const loginErrorMessage = document.getElementById("login-error-message");
 
+// Toggle Between Signup and Login Forms
 toggleLink.addEventListener("click", () => {
   if (signupForm.classList.contains("active")) {
     signupForm.classList.remove("active");
@@ -38,6 +47,7 @@ toggleLink.addEventListener("click", () => {
     toggleLink.textContent = "Login";
   }
 });
+
 // Signup Form Submission
 signupForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -70,31 +80,7 @@ loginForm.addEventListener("submit", async (e) => {
 
   const email = document.getElementById("login-email").value;
   const password = document.getElementById("login-password").value;
-
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-
-    // Save user ID in localStorage for session persistence
-    localStorage.setItem("userId", user.uid);
-
-    // Redirect to the dashboard
-    window.location.href = "dashboard.html";
-  } catch (error) {
-    loginErrorMessage.style.display = "block"; // Show error message
-    loginErrorMessage.textContent = "Invalid login. Please try again.";
-  }
-});
-import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, browserSessionPersistence } from "firebase/auth";
-
-const auth = getAuth();
-
-document.getElementById('login-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const email = document.getElementById('login-email').value;
-  const password = document.getElementById('login-password').value;
-  const rememberMe = document.getElementById('remember-me').checked; // Checkbox
+  const rememberMe = document.getElementById("remember-me").checked; // Checkbox for "Remember Me"
 
   try {
     // Set persistence based on "Remember Me"
@@ -103,13 +89,26 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 
     // Sign in the user
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-    // Redirect to dashboard
-    window.location.href = 'dashboard.html';
+    // Save user ID in localStorage for persistence across pages
+    localStorage.setItem("userId", user.uid);
+
+    // Redirect to the dashboard
+    window.location.href = "dashboard.html";
   } catch (error) {
-    console.error('Login error:', error.message);
-    document.getElementById('login-error-message').textContent = error.message;
-    document.getElementById('login-error-message').style.display = 'block';
+    console.error("Login error:", error.message);
+    loginErrorMessage.style.display = "block"; // Show error message
+    loginErrorMessage.textContent = error.message;
   }
 });
 
+// Check Authentication State (For Persistence Across Pages)
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    console.log("User is signed in:", user.email);
+    localStorage.setItem("userId", user.uid); // Ensure user ID is stored
+  } else {
+    console.log("No user is signed in.");
+  }
+});
