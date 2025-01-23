@@ -1,1 +1,16 @@
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
+const auth = getAuth();
+
+window.addEventListener("load", () => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // If logged in, redirect to Dashboard
+      window.location.href = "dashboard.html";
+    } else {
+      // If not logged in, redirect to Login/Signup
+      window.location.href = "login-page.html";
+    }
+  });
+});
 
