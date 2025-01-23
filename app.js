@@ -85,4 +85,31 @@ loginForm.addEventListener("submit", async (e) => {
     loginErrorMessage.textContent = "Invalid login. Please try again.";
   }
 });
+import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, browserSessionPersistence } from "firebase/auth";
+
+const auth = getAuth();
+
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById('login-email').value;
+  const password = document.getElementById('login-password').value;
+  const rememberMe = document.getElementById('remember-me').checked; // Checkbox
+
+  try {
+    // Set persistence based on "Remember Me"
+    const persistence = rememberMe ? browserLocalPersistence : browserSessionPersistence;
+    await setPersistence(auth, persistence);
+
+    // Sign in the user
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+    // Redirect to dashboard
+    window.location.href = 'dashboard.html';
+  } catch (error) {
+    console.error('Login error:', error.message);
+    document.getElementById('login-error-message').textContent = error.message;
+    document.getElementById('login-error-message').style.display = 'block';
+  }
+});
 
