@@ -3,10 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Account</title>
-  <script type="module" src="account.js"></script>
+  <title>Account | Crown Co</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .loading-container {
+      text-align: center;
+    }
+
+    .spinner {
+      margin: 20px auto;
+      width: 50px;
+      height: 50px;
+      border: 5px solid #ccc;
+      border-top: 5px solid #007bff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loading-message {
+      font-size: 1.2rem;
+      color: #333;
+    }
+  </style>
 </head>
 <body>
-  <h1 id="loading-message">Loading...</h1>
+  <div class="loading-container">
+    <div class="spinner"></div>
+    <p id="loading-message" class="loading-message">Authenticating...</p>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyCxot6nMXg2AZywXJzIK7rgS2goMkEcMAc",
+      authDomain: "crown-co.firebaseapp.com",
+      projectId: "crown-co",
+      storageBucket: "crown-co.appspot.com",
+      messagingSenderId: "643804759346",
+      appId: "1:643804759346:web:7eb311c2e6532d04da832b",
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const loadingMessage = document.getElementById("loading-message");
+
+    // Check auth state
+    window.addEventListener("load", () => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          loadingMessage.textContent = `Welcome back, ${user.email.split("@")[0]}! Redirecting...`;
+          setTimeout(() => {
+            window.location.href = "dashboard.html";
+          }, 2000); // Delay to display the message
+        } else {
+          loadingMessage.textContent = "Redirecting to login...";
+          setTimeout(() => {
+            window.location.href = "login-page.html";
+          }, 2000);
+        }
+      });
+    });
+  </script>
 </body>
 </html>
