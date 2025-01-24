@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
 
-// Firebase configuration (ensure your Firebase config is correct)
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCxot6nMXg2AZywXJzIK7rgS2goMkEcMAc",
   authDomain: "crown-co.firebaseapp.com",
@@ -15,20 +15,28 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Wait for the page to load
-window.addEventListener("load", () => {
-  const loadingMessage = document.getElementById("loading-message");
+// DOM Elements
+const loadingMessage = document.getElementById("loading-message");
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // If user is logged in, redirect to dashboard
-      window.location.href = "dashboard.html";
-    } else {
-      // If user is not logged in, redirect to login/signup
-      window.location.href = "login-page.html";
+window.addEventListener("load", () => {
+  console.log("Page loaded. Checking authentication state...");
+
+  onAuthStateChanged(
+    auth,
+    (user) => {
+      if (user) {
+        console.log("User is logged in:", user);
+        // Redirect to dashboard if user is logged in
+        window.location.href = "dashboard.html";
+      } else {
+        console.log("No user is logged in.");
+        // Redirect to login/signup page
+        window.location.href = "login-page.html";
+      }
+    },
+    (error) => {
+      console.error("Error with onAuthStateChanged:", error);
+      loadingMessage.textContent = `Error: ${error.message}`;
     }
-  }, (error) => {
-    // If there's an error with Firebase, show it
-    loadingMessage.textContent = `Error: ${error.message}`;
-  });
+  );
 });
