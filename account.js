@@ -1,64 +1,16 @@
-// Initialize Firebase (ensure this is configured correctly in your project)
-if (!firebase.apps.length) {
-  firebase.initializeApp({
-    apiKey: "your-api-key",
-    authDomain: "your-auth-domain",
-    projectId: "your-project-id",
-  });
-}
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
 
-// Signup Function
-document.getElementById('signup-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
+const auth = getAuth();
 
-  const firstName = document.getElementById('signup-first-name').value.trim();
-  const lastName = document.getElementById('signup-last-name').value.trim();
-  const email = document.getElementById('signup-email').value.trim();
-  const password = document.getElementById('signup-password').value;
-
-  try {
-    // Create a new user in Firebase Authentication
-    const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
-
-    // Save additional user data in Firestore
-    await firebase.firestore().collection('users').doc(userCredential.user.uid).set({
-      firstName,
-      lastName,
-      email,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    });
-
-    alert(`Signup successful! Welcome, ${firstName} ${lastName}`);
-    window.location.href = 'dashboard.html'; // Redirect to the dashboard
-  } catch (error) {
-    console.error('Error signing up:', error.message);
-    alert(error.message);
-  }
-});
-
-// Login Function
-document.getElementById('login-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
-
-  try {
-    const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
-
-    // Fetch user data from Firestore
-    const userDoc = await firebase.firestore().collection('users').doc(userCredential.user.uid).get();
-
-    if (userDoc.exists) {
-      const userData = userDoc.data();
-      alert(`Welcome back, ${userData.firstName || 'User'}!`);
-      window.location.href = 'dashboard.html'; // Redirect to the dashboard
+// When the page loads, check the user's authentication state
+window.addEventListener("load", () => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is logged in; redirect to dashboard
+      window.location.href = "dashboard.html";
     } else {
-      console.error('User data not found!');
-      alert('User data not found. Please contact support.');
+      // User is not logged in; redirect to login page
+      window.location.href = "login-page.html";
     }
-  } catch (error) {
-    console.error('Error logging in:', error.message);
-    alert(error.message);
-  }
+  });
 });
