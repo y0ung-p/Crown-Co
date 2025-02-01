@@ -1,51 +1,37 @@
-function findBarbers() {
-  const locationInput = document.getElementById("location").value;
-
-  if (!locationInput) {
-    alert("Please enter a location.");
-    return;
-  }
-
-  const geocoder = new google.maps.Geocoder();
-
-  geocoder.geocode({ address: locationInput }, (results, status) => {
-    if (status === "OK") {
-      const userLocation = results[0].geometry.location;
-      searchNearbyBarbers(userLocation);
-    } else {
-      alert("Location not found. Try again.");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find a Barber</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+  <script defer src="barber-finder.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
     }
-  });
-}
-
-function searchNearbyBarbers(location) {
-  const map = new google.maps.Map(document.getElementById("map"), {
-    center: location,
-    zoom: 14,
-  });
-
-  const request = {
-    location: location,
-    radius: "5000", // 5km radius
-    type: ["hair_care"], // Google Places API category for barbershops
-    keyword: "barber shop",
-  };
-
-  const service = new google.maps.places.PlacesService(map);
-  service.nearbySearch(request, (results, status) => {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-      displayResults(results);
-    } else {
-      alert("No barber shops found nearby.");
+    #map {
+      height: 400px;
+      width: 100%;
+      margin-top: 20px;
     }
-  });
-}
+    #results {
+      margin-top: 20px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
 
-function displayResults(places) {
-  const resultsDiv = document.getElementById("results");
-  resultsDiv.innerHTML = "<h2>Top Barber Shops Near You:</h2>";
+  <h1>Find the Best Barbers Near You</h1>
+  
+  <input type="text" id="location" placeholder="Enter your location">
+  <button onclick="findBarbers()">Search</button>
 
-  places.forEach((place) => {
-    const placeElement = document.createElement("div");
-    placeElement.innerHTML = `<strong>${place.name}</strong> - Rating: ${place.rating || "N/A"}`;
-    resultsDiv.a
+  <div id="results"></div>
+  <div id="map"></div>
+
+</body>
+</html>
