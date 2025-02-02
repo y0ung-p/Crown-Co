@@ -3,38 +3,83 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog - Noble House</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Find Barbershops Near You</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    #map {
+      height: 400px;
+      width: 100%;
+      margin-top: 10px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+    }
+    #results {
+      text-align: left;
+      max-width: 500px;
+      margin: auto;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <div class="logo">Noble House</div>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="shop.html">Shop</a></li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="account.html">Account</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  <h1>Find a Barbershop Near You</h1>
+  <input type="text" id="location" placeholder="Enter your city or address">
+  <button onclick="findBarbershops()">Search</button>
+  <button onclick="getUserLocation()">Use My Location</button>
+  <div id="map"></div>
+  <h2>Nearby Barbershops</h2>
+  <ul id="results"></ul>
 
-  <section class="blog">
-    <h1>Our Blog</h1>
-    <article>
-      <h2>Top Trends for 2025</h2>
-      <p>Explore the fashion trends that will define the year ahead.</p>
-    </article>
-    <article>
-      <h2>Behind the Brand</h2>
-      <p>Learn about the journey and values that shape Noble House.</p>
-    </article>
-  </section>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    let map = L.map('map').setView([0, 0], 2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-  <footer>
-    <p>© 2025 Noble House. All rights reserved.</p>
-  </footer>
+    function getUserLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const { latitude, longitude } = position.coords;
+          searchBarbershops(latitude, longitude);
+        });
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+    }
+
+    function findBarbershops() {
+      const location = document.getElementById("location").value;
+      fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${location}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.length > 0) {
+            searchBarbershops(data[0].lat, data[0].lon);
+          } else {
+            alert("Location not found!");
+          }
+        });
+    }
+
+    function searchBarbershops(lat, lon) {
+      map.setView([lat, lon], 13);
+      fetch(`https://overpass-api.de/api/interpreter?data=[out:json];node[shop=hairdresser](around:5000,${lat},${lon});out;`)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById("results").innerHTML = "";
+          map.eachLayer(layer => { if (layer instanceof L.Marker) map.removeLayer(layer); });
+          data.elements.forEach(shop => {
+            const { lat, lon, tags } = shop;
+            const name = tags.name || "Unnamed Barbershop";
+            document.getElementById("results").innerHTML += `<li>${name} (${lat}, ${lon})</li>`;
+            L.marker([lat, lon]).addTo(map).bindPopup(name);
+          });
+        });
+    }
+  </script>
 </body>
 </html>
