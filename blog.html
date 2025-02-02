@@ -44,7 +44,7 @@
             font-weight: bold;
         }
         #map {
-            height: 300px;
+            height: 400px;
             border-radius: 10px;
             margin-top: 10px;
         }
@@ -73,12 +73,12 @@
                 return;
             }
             
-            let map = L.map('map').setView([0, 0], 2);
+            let map = L.map('map').setView([-37.8136, 144.9631], 12);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
 
-            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${location}`)
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&countrycodes=AU&q=${location}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.length === 0) {
@@ -102,9 +102,13 @@
                                 let barberLat = barber.lat || barber.center.lat;
                                 let barberLon = barber.lon || barber.center.lon;
                                 let barberName = barber.tags.name || "Unnamed Barbershop";
+                                let barberAddress = barber.tags["addr:full"] || "Address not available";
+                                let barberPhone = barber.tags["contact:phone"] || "No contact info";
+
+                                let popupContent = `<strong>${barberName}</strong><br>${barberAddress}<br>${barberPhone}`;
 
                                 L.marker([barberLat, barberLon]).addTo(map)
-                                    .bindPopup(`<strong>${barberName}</strong>`)
+                                    .bindPopup(popupContent)
                                     .openPopup();
                             });
                         });
