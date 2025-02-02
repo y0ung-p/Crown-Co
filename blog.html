@@ -83,14 +83,7 @@ header nav ul li a:hover {
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Find the Best Barbers Near You 💈</h1>
-        <p id="location-status">Detecting your location...</p>
-        <input type="text" id="location-input" placeholder="Enter your city or address">
-        <button onclick="findBarbershops()">Search</button>
-        <div id="map"></div>
-    </div>
- <header>
+     <header>
     <div class="logo">Noble House</div>
     <nav>
       <ul>
@@ -103,6 +96,13 @@ header nav ul li a:hover {
       </ul>
     </nav>
   </header>
+    <div class="container">
+        <h1>Find the Best Barbers Near You 💈</h1>
+        <p id="location-status">Detecting your location...</p>
+        <input type="text" id="location-input" placeholder="Enter your city or address">
+        <button onclick="findBarbershops()">Search</button>
+        <div id="map"></div>
+    </div>
     <script>
         let userCountry = "";
         function getUserLocation(data) {
