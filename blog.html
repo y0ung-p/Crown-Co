@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Find a Barbershop Near You</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://ipapi.co/json/?callback=getUserLocation"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://maps.googleapis.com/maps/api/js?key=&libraries=places"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -44,9 +41,10 @@
             font-weight: bold;
         }
         #map {
-            height: 400px;
+            height: 500px;
+            width: 90%;
+            margin: 20px auto;
             border-radius: 10px;
-            margin-top: 10px;
             box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
         }
     </style>
@@ -55,68 +53,91 @@
     <div class="container">
         <h1>Find the Best Barbers Near You 💈</h1>
         <p id="location-status">Detecting your location...</p>
-        <input type="text" id="location-input" placeholder="Enter your city or address">
+        <input type="text" id="location-input" placeholder="Enter your suburb or address">
         <button onclick="findBarbershops()">Search</button>
         <div id="map"></div>
     </div>
 
     <script>
-        let userCountry = "";
-        function getUserLocation(data) {
-            userCountry = data.country_name;
-            document.getElementById("location-status").textContent = `Detected Country: ${userCountry}`;
-        }
+        let map;
+        let service;
+        let infowindow;
 
-        function findBarbershops() {
-            let location = document.getElementById("location-input").value;
-            if (!location) {
-                alert("Please enter a location.");
-                return;
-            }
-            
-            let map = L.map('map').setView([-37.8136, 144.9631], 10); // Default to Melbourne, Australia
-            L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(map);
-
-            fetch(`https://nominatim.openstreetmap.org/search?format=json&country=${userCountry}&q=${location}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length === 0) {
-                        alert("Location not found.");
-                        return;
-                    }
-                    let lat = data[0].lat;
-                    let lon = data[0].lon;
-                    map.setView([lat, lon], 13);
-                    
-                    let overpassQuery = `[out:json];
-                        (node["shop"="hairdresser"](around:5000,${lat},${lon});
-                        way["shop"="hairdresser"](around:5000,${lat},${lon});
-                        relation["shop"="hairdresser"](around:5000,${lat},${lon}););
-                        out center;`;
-
-                    fetch("https://overpass-api.de/api/interpreter?data=" + encodeURIComponent(overpassQuery))
-                        .then(response => response.json())
-                        .then(barbers => {
-                            barbers.elements.forEach(barber => {
-                                let barberLat = barber.lat || barber.center.lat;
-                                let barberLon = barber.lon || barber.center.lon;
-                                let barberName = barber.tags.name || "Unnamed Barbershop";
-                                let barberAddress = barber.tags["addr:full"] || barber.tags["addr:street"] || "Address not available";
-                                let barberPhone = barber.tags["contact:phone"] || "No contact info";
-                                let barberRating = barber.tags["rating"] || "No rating available";
-
-                                L.marker([barberLat, barberLon]).addTo(map)
-                                    .bindPopup(`<strong>${barberName}</strong><br>
-                                                📍 ${barberAddress}<br>
-                                                ☎️ ${barberPhone}<br>
-                                                ⭐ ${barberRating}`)
-                                    .openPopup();
-                            });
-                        });
+        function initMap() {
+            navigator.geolocation.getCurrentPosition((position) => {
+                const userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                map = new google.maps.Map(document.getElementById("map"), {
+                    center: userLocation,
+                    zoom: 14,
+                    styles: [{ elementType: "geometry", stylers: [{ color: "#242f3e" }] }, { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] }, { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] }],
                 });
+                findBarbershops(userLocation);
+            }, () => {
+                alert("Location access denied. Please enter your location manually.");
+            });
         }
+
+        function findBarbershops(location = null) {
+            let inputLocation = document.getElementById("location-input").value;
+            if (inputLocation && !location) {
+                let geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ address: inputLocation }, (results, status) => {
+                    if (status === "OK") {
+                        let newLocation = results[0].geometry.location;
+                        map.setCenter(newLocation);
+                        searchBarbers(newLocation);
+                    } else {
+                        alert("Location not found. Try again.");
+                    }
+                });
+            } else {
+                searchBarbers(location);
+            }
+        }
+
+        function searchBarbers(location) {
+            service = new google.maps.places.PlacesService(map);
+            service.nearbySearch(
+                {
+                    location: location,
+                    radius: 5000,
+                    type: ["hair_care"],
+                    keyword: "barbershop"
+                },
+                (results, status) => {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        results.forEach((place) => {
+                            createMarker(place);
+                        });
+                    } else {
+                        alert("No barbershops found nearby.");
+                    }
+                }
+            );
+        }
+
+        function createMarker(place) {
+            let marker = new google.maps.Marker({
+                position: place.geometry.location,
+                map: map,
+                title: place.name
+            });
+
+            google.maps.event.addListener(marker, "click", () => {
+                service.getDetails({ placeId: place.place_id }, (details, status) => {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        let content = `<strong>${details.name}</strong><br>
+                                       ⭐ ${details.rating || "No rating available"}<br>
+                                       📍 ${details.formatted_address || "Address not available"}<br>
+                                       ☎️ ${details.formatted_phone_number || "No contact info"}`;
+                        let infowindow = new google.maps.InfoWindow({ content: content });
+                        infowindow.open(map, marker);
+                    }
+                });
+            });
+        }
+
+        window.onload = initMap;
     </script>
 </body>
 </html>
