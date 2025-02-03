@@ -18,17 +18,6 @@
             margin: 0;
             padding: 0;
         }
-        .navbar {
-            background-color: #222;
-            padding: 15px;
-            text-align: center;
-        }
-        .navbar a {
-            color: #ffcc00;
-            text-decoration: none;
-            padding: 10px 20px;
-            font-weight: bold;
-        }
         .container {
             max-width: 600px;
             margin: 50px auto;
@@ -62,12 +51,17 @@
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <a href="index.html">Home</a>
-        <a href="shop.html">Shop</a>
-        <a href="blog.html">Blog</a>
-        <a href="account.html">Account</a>
-    </div>
+    <!-- Navbar copied from Crown Co homepage -->
+    <nav class="navbar">
+        <div class="logo"><a href="index.html">Crown Co</a></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="dashboard.html">Account</a></li>
+        </ul>
+    </nav>
+
     <div class="container">
         <h1>Find the Best Barbers Near You 💈</h1>
         <p id="location-status">Detecting your location...</p>
@@ -77,67 +71,67 @@
     </div>
 
     <script>
-        let userCountry = "";
-        function getUserLocation(data) {
-            userCountry = data.country_name;
-            document.getElementById("location-status").textContent = `Detected Country: ${userCountry}`;
+    function getUserLocation(data) {
+        if (data.country_name && data.city) {
+            document.getElementById("location-input").value = `${data.city}, ${data.country_name}`;
+        }
+    }
+
+    function findBarbershops() {
+        let location = document.getElementById("location-input").value;
+        if (!location) {
+            alert("Please enter a location.");
+            return;
         }
 
-        function findBarbershops() {
-            let location = document.getElementById("location-input").value;
-            if (!location) {
-                alert("Please enter a location.");
-                return;
-            }
+        let map = L.map('map').setView([-37.8136, 144.9631], 10); // Default to Melbourne
+        L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
 
-            let map = L.map('map').setView([-37.8136, 144.9631], 10);
-            L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(map);
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${location}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.length === 0) {
+                    alert("Location not found.");
+                    return;
+                }
+                let lat = data[0].lat;
+                let lon = data[0].lon;
+                map.setView([lat, lon], 13);
 
-            fetch(`https://nominatim.openstreetmap.org/search?format=json&country=${userCountry}&q=${location}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length === 0) {
-                        alert("Location not found.");
-                        return;
-                    }
-                    let lat = data[0].lat;
-                    let lon = data[0].lon;
-                    map.setView([lat, lon], 13);
+                let overpassQuery = `[out:json];
+                    (node["shop"="hairdresser"](around:5000,${lat},${lon});
+                    way["shop"="hairdresser"](around:5000,${lat},${lon});
+                    relation["shop"="hairdresser"](around:5000,${lat},${lon}););
+                    out center;`;
 
-                    let overpassQuery = `[out:json];
-                        (node["shop"="hairdresser"](around:5000,${lat},${lon});
-                        way["shop"="hairdresser"](around:5000,${lat},${lon});
-                        relation["shop"="hairdresser"](around:5000,${lat},${lon}););
-                        out center;`;
+                fetch("https://overpass-api.de/api/interpreter?data=" + encodeURIComponent(overpassQuery))
+                    .then(response => response.json())
+                    .then(barbers => {
+                        if (barbers.elements.length === 0) {
+                            alert("No barbershops found in this area.");
+                            return;
+                        }
+                        barbers.elements.forEach(barber => {
+                            let barberLat = barber.lat || barber.center.lat;
+                            let barberLon = barber.lon || barber.center.lon;
+                            let barberName = barber.tags.name || "Unnamed Barbershop";
+                            let barberAddress = barber.tags["addr:full"] || barber.tags["addr:street"] || "Address not available";
+                            let barberPhone = barber.tags["contact:phone"] || "No contact info";
+                            let barberRating = barber.tags["rating"] ? `⭐ ${barber.tags["rating"]}/5` : "No rating available";
 
-                    fetch("https://overpass-api.de/api/interpreter?data=" + encodeURIComponent(overpassQuery))
-                        .then(response => response.json())
-                        .then(barbers => {
-                            if (barbers.elements.length === 0) {
-                                alert("No barbershops found in this area.");
-                                return;
-                            }
-                            barbers.elements.forEach(barber => {
-                                let barberLat = barber.lat || barber.center.lat;
-                                let barberLon = barber.lon || barber.center.lon;
-                                let barberName = barber.tags.name || "Unnamed Barbershop";
-                                let barberAddress = barber.tags["addr:full"] || barber.tags["addr:street"] || "Address not available";
-                                let barberPhone = barber.tags["contact:phone"] || "No contact info";
-                                let barberRating = barber.tags["rating"] ? `⭐ ${barber.tags["rating"]}/5` : "No rating available";
-
-                                L.marker([barberLat, barberLon]).addTo(map)
-                                    .bindPopup(`<strong>${barberName}</strong><br>
-                                                📍 ${barberAddress}<br>
-                                                ☎️ ${barberPhone}<br>
-                                                ${barberRating}`)
-                                    .openPopup();
-                            });
-                        })
-                        .catch(error => console.error("Error fetching Overpass data:", error));
-                });
-        }
+                            L.marker([barberLat, barberLon]).addTo(map)
+                                .bindPopup(`<strong>${barberName}</strong><br>
+                                            📍 ${barberAddress}<br>
+                                            ☎️ ${barberPhone}<br>
+                                            ${barberRating}`)
+                                .openPopup();
+                        });
+                    })
+                    .catch(error => console.error("Error fetching Overpass data:", error));
+            });
+    }
     </script>
 </body>
 </html>
