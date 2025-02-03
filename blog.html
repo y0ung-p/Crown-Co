@@ -63,7 +63,7 @@
     <script>
         let userCountry = "";
         function getUserLocation(data) {
-            userCountry = data.country;
+            userCountry = data.country_name;
             document.getElementById("location-status").textContent = `Detected Country: ${userCountry}`;
         }
 
@@ -75,11 +75,11 @@
             }
             
             let map = L.map('map').setView([-37.8136, 144.9631], 10); // Default to Melbourne, Australia
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
 
-            fetch(`https://nominatim.openstreetmap.org/search?format=json&country=Australia&q=${location}`)
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&country=${userCountry}&q=${location}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.length === 0) {
