@@ -1,37 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Find a Barber</title>
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
-  <script defer src="barber-finder.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-    }
-    #map {
-      height: 400px;
-      width: 100%;
-      margin-top: 20px;
-    }
-    #results {
-      margin-top: 20px;
-      text-align: left;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find a Barbershop Near You</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://ipapi.co/json/?callback=getUserLocation"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #111;
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+        }
+        input, button {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        input {
+            background: #333;
+            color: #fff;
+        }
+        button {
+            background: #ffcc00;
+            color: #111;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        #map {
+            height: 400px;
+            border-radius: 10px;
+            margin-top: 10px;
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <h1>Find the Best Barbers Near You 💈</h1>
+        <p id="location-status">Detecting your location...</p>
+        <input type="text" id="location-input" placeholder="Enter your city or address">
+        <button onclick="findBarbershops()">Search</button>
+        <div id="map"></div>
+    </div>
 
-  <h1>Find the Best Barbers Near You</h1>
-  
-  <input type="text" id="location" placeholder="Enter your location">
-  <button onclick="findBarbers()">Search</button>
+    <script>
+        let userCountry = "";
+        function getUserLocation(data) {
+            userCountry = data.country;
+            document.getElementById("location-status").textContent = `Detected Country: ${userCountry}`;
+        }
 
-  <div id="results"></div>
-  <div id="map"></div>
+        function findBarbershops() {
+            let location = document.getElementById("location-input").value;
+            if (!location) {
+                alert("Please enter a location.");
+                return;
+            }
+            
+            let map = L.map('map').setView([-37.8136, 144.9631], 10); // Default to Melbourne, Australia
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
 
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&country=Australia&q=${location}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length === 0) {
+                        alert("Location not found.");
+                        return;
+                    }
+                    let lat = data[0].lat;
+                    let lon = data[0].lon;
+                    map.setView([lat, lon], 13);
+                    
+                    let overpassQuery = `[out:json];
+                        (node["shop"="hairdresser"](around:5000,${lat},${lon});
+                        way["shop"="hairdresser"](around:5000,${lat},${lon});
+                        relation["shop"="hairdresser"](around:5000,${lat},${lon}););
+                        out center;`;
+
+                    fetch("https://overpass-api.de/api/interpreter?data=" + encodeURIComponent(overpassQuery))
+                        .then(response => response.json())
+                        .then(barbers => {
+                            barbers.elements.forEach(barber => {
+                                let barberLat = barber.lat || barber.center.lat;
+                                let barberLon = barber.lon || barber.center.lon;
+                                let barberName = barber.tags.name || "Unnamed Barbershop";
+                                let barberAddress = barber.tags["addr:full"] || barber.tags["addr:street"] || "Address not available";
+                                let barberPhone = barber.tags["contact:phone"] || "No contact info";
+                                let barberRating = barber.tags["rating"] || "No rating available";
+
+                                L.marker([barberLat, barberLon]).addTo(map)
+                                    .bindPopup(`<strong>${barberName}</strong><br>
+                                                📍 ${barberAddress}<br>
+                                                ☎️ ${barberPhone}<br>
+                                                ⭐ ${barberRating}`)
+                                    .openPopup();
+                            });
+                        });
+                });
+        }
+    </script>
 </body>
 </html>
