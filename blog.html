@@ -60,60 +60,64 @@
     </div>
 
     <script>
-        let userCountry = "";
-        function getUserLocation(data) {
-            userCountry = data.country;
-            document.getElementById("location-status").textContent = `Detected Country: ${userCountry}`;
-        }
+    function findBarbershops() {
+    let location = document.getElementById("location-input").value;
+    if (!location) {
+        alert("Please enter a location.");
+        return;
+    }
 
-        function findBarbershops() {
-            let location = document.getElementById("location-input").value;
-            if (!location) {
-                alert("Please enter a location.");
+    let map = L.map('map').setView([-37.8136, 144.9631], 10); // Default to Melbourne
+    L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Geocode user location
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${location}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.length === 0) {
+                alert("Location not found.");
                 return;
             }
-            
-            let map = L.map('map').setView([-37.8136, 144.9631], 12);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(map);
+            let lat = data[0].lat;
+            let lon = data[0].lon;
+            map.setView([lat, lon], 13);
 
-            fetch(`https://nominatim.openstreetmap.org/search?format=json&countrycodes=AU&q=${location}`)
+            // Query OpenStreetMap (Overpass API) for barbershops
+            let overpassQuery = `[out:json];
+                (node["shop"="hairdresser"](around:5000,${lat},${lon});
+                way["shop"="hairdresser"](around:5000,${lat},${lon});
+                relation["shop"="hairdresser"](around:5000,${lat},${lon}););
+                out center;`;
+
+            fetch("https://overpass-api.de/api/interpreter?data=" + encodeURIComponent(overpassQuery))
                 .then(response => response.json())
-                .then(data => {
-                    if (data.length === 0) {
-                        alert("Location not found.");
+                .then(barbers => {
+                    if (barbers.elements.length === 0) {
+                        alert("No barbershops found in this area.");
                         return;
                     }
-                    let lat = data[0].lat;
-                    let lon = data[0].lon;
-                    map.setView([lat, lon], 13);
-                    
-                    let overpassQuery = `[out:json];
-                        (node["shop"="hairdresser"](around:5000,${lat},${lon});
-                        way["shop"="hairdresser"](around:5000,${lat},${lon});
-                        relation["shop"="hairdresser"](around:5000,${lat},${lon}););
-                        out center;`;
+                    barbers.elements.forEach(barber => {
+                        let barberLat = barber.lat || barber.center.lat;
+                        let barberLon = barber.lon || barber.center.lon;
+                        let barberName = barber.tags.name || "Unnamed Barbershop";
+                        let barberAddress = barber.tags["addr:full"] || barber.tags["addr:street"] || "Address not available";
+                        let barberPhone = barber.tags["contact:phone"] || "No contact info";
+                        let barberRating = barber.tags["rating"] ? `⭐ ${barber.tags["rating"]}/5` : "No rating available";
 
-                    fetch("https://overpass-api.de/api/interpreter?data=" + encodeURIComponent(overpassQuery))
-                        .then(response => response.json())
-                        .then(barbers => {
-                            barbers.elements.forEach(barber => {
-                                let barberLat = barber.lat || barber.center.lat;
-                                let barberLon = barber.lon || barber.center.lon;
-                                let barberName = barber.tags.name || "Unnamed Barbershop";
-                                let barberAddress = barber.tags["addr:full"] || "Address not available";
-                                let barberPhone = barber.tags["contact:phone"] || "No contact info";
+                        L.marker([barberLat, barberLon]).addTo(map)
+                            .bindPopup(`<strong>${barberName}</strong><br>
+                                        📍 ${barberAddress}<br>
+                                        ☎️ ${barberPhone}<br>
+                                        ${barberRating}`)
+                            .openPopup();
+                    });
+                })
+                .catch(error => console.error("Error fetching Overpass data:", error));
+        });
+}
 
-                                let popupContent = `<strong>${barberName}</strong><br>${barberAddress}<br>${barberPhone}`;
-
-                                L.marker([barberLat, barberLon]).addTo(map)
-                                    .bindPopup(popupContent)
-                                    .openPopup();
-                            });
-                        });
-                });
-        }
     </script>
 </body>
 </html>
