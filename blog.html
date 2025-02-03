@@ -1,19 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <header>
-    <div class="logo">Noble House</div>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="shop.html">Shop</a></li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="login-page.html">Account</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Find a Barbershop Near You</title>
@@ -37,7 +24,7 @@
             background: #222;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
         }
         input, button {
             width: 80%;
@@ -60,41 +47,8 @@
             height: 400px;
             border-radius: 10px;
             margin-top: 10px;
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
         }
-  header {
-  background-color: #222;
-  color: #191919;
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  animation: slideDown 1s ease;
-}
-header .logo {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #f9c74f;
-}
-header nav ul {
-  list-style: none;
-  display: flex;
-  gap: 1.5rem;
-}
-header nav ul li a {
-  text-decoration: none;
-  color: #fff;
-  font-size: 1rem;
-  transition: color 0.3s ease;
-}
-header nav ul li a:hover {
-  color: #f9c74f;
-}
-
-
     </style>
 </head>
 <body>
@@ -105,6 +59,7 @@ header nav ul li a:hover {
         <button onclick="findBarbershops()">Search</button>
         <div id="map"></div>
     </div>
+
     <script>
         let userCountry = "";
         function getUserLocation(data) {
@@ -119,12 +74,12 @@ header nav ul li a:hover {
                 return;
             }
             
-            let map = L.map('map').setView([-37.8136, 144.9631], 12);
+            let map = L.map('map').setView([-37.8136, 144.9631], 10); // Default to Melbourne, Australia
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
 
-            fetch(`https://nominatim.openstreetmap.org/search?format=json&countrycodes=AU&q=${location}`)
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&country=Australia&q=${location}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.length === 0) {
@@ -148,13 +103,15 @@ header nav ul li a:hover {
                                 let barberLat = barber.lat || barber.center.lat;
                                 let barberLon = barber.lon || barber.center.lon;
                                 let barberName = barber.tags.name || "Unnamed Barbershop";
-                                let barberAddress = barber.tags["addr:full"] || "Address not available";
+                                let barberAddress = barber.tags["addr:full"] || barber.tags["addr:street"] || "Address not available";
                                 let barberPhone = barber.tags["contact:phone"] || "No contact info";
-
-                                let popupContent = `<strong>${barberName}</strong><br>${barberAddress}<br>${barberPhone}`;
+                                let barberRating = barber.tags["rating"] || "No rating available";
 
                                 L.marker([barberLat, barberLon]).addTo(map)
-                                    .bindPopup(popupContent)
+                                    .bindPopup(`<strong>${barberName}</strong><br>
+                                                📍 ${barberAddress}<br>
+                                                ☎️ ${barberPhone}<br>
+                                                ⭐ ${barberRating}`)
                                     .openPopup();
                             });
                         });
